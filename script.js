@@ -7,7 +7,6 @@ class ClaudeCodeWebWrapper {
     constructor() {
         this.currentMode = 'chat';
         this.messageCounter = 0;
-        this.isYNVisible = false;
         
         this.initializeElements();
         this.attachEventListeners();

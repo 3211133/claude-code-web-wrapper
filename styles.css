@@ -311,9 +311,9 @@ body {
 
 .input-textarea {
     width: 100%;
-    min-height: 72px;
+    min-height: 24px;
     max-height: 120px;
-    resize: none;
+    resize: vertical;
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     border: 1px solid var(--input-border);
@@ -344,21 +344,6 @@ body {
     background: var(--bg-secondary);
     box-shadow: var(--shadow-md);
     min-height: 22px;
-}
-
-.normal-actions, .yn-actions {
-    display: flex;
-}
-
-.yn-actions {
-    display: none;
-}
-
-.action-buttons.show-yn .normal-actions {
-    display: none;
-}
-
-.action-buttons.show-yn .yn-actions {
     display: flex;
 }
 
