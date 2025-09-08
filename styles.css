@@ -103,6 +103,9 @@ body {
     max-height: 100vh;
     overflow: hidden;
     position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 /* ====================================================================
@@ -517,8 +520,6 @@ body {
 /* Tablet (768px～1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
     .app-container {
-        max-width: 800px;
-        margin: 0 auto;
         border-left: 1px solid var(--border-color);
         border-right: 1px solid var(--border-color);
     }
@@ -536,10 +537,18 @@ body {
 /* Desktop (1024px～) */
 @media (min-width: 1024px) {
     .app-container {
-        max-width: 1200px;
-        margin: 0 auto;
         border-left: 1px solid var(--border-color);
         border-right: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        margin-top: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        min-height: calc(100vh - 2 * var(--spacing-lg));
+        max-height: calc(100vh - 2 * var(--spacing-lg));
+    }
+    
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 0;
     }
     
     .mode-buttons {
@@ -557,11 +566,6 @@ body {
         padding: var(--spacing-lg);
     }
     
-    .send-button {
-        width: 48px;
-        height: 48px;
-    }
-    
     .claude-output {
         padding: var(--spacing-xl);
     }
@@ -569,8 +573,7 @@ body {
     /* Desktop hover effects */
     .demo-button:hover,
     .mode-button:hover,
-    .yn-button:hover,
-    .send-button:hover {
+    .action-button:hover {
         transform: translateY(-1px);
     }
 }
