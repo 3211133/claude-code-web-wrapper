@@ -20,12 +20,13 @@ class ClaudeCodeWebWrapper {
         this.claudeOutput = document.getElementById('claude-output');
         this.userInput = document.getElementById('user-input');
         this.sendButton = document.getElementById('send-button');
-        this.ynButtons = document.getElementById('yn-buttons');
+        this.actionButtons = document.getElementById('action-buttons');
+        this.ynActions = document.getElementById('yn-actions');
         this.statusIndicator = document.getElementById('status');
         
         // Button collections
         this.modeButtons = document.querySelectorAll('.mode-button');
-        this.ynButtonElements = document.querySelectorAll('.yn-button');
+        this.actionButtonElements = document.querySelectorAll('.action-button');
         this.demoButtons = document.querySelectorAll('.demo-button');
     }
     
@@ -55,11 +56,15 @@ class ClaudeCodeWebWrapper {
             this.autoResizeTextarea();
         });
         
-        // Y/N buttons
-        this.ynButtonElements.forEach(button => {
+        // Action buttons (send / Y/N)
+        this.actionButtonElements.forEach(button => {
             button.addEventListener('click', (e) => {
-                const action = e.target.closest('.yn-button').dataset.action;
-                this.handleYNAction(action);
+                const action = e.target.closest('.action-button').dataset.action;
+                if (action === 'send') {
+                    this.sendMessage();
+                } else {
+                    this.handleYNAction(action);
+                }
             });
         });
         
@@ -363,8 +368,7 @@ console.log(message);</code></pre>
         if (this.isYNVisible) return;
         
         this.isYNVisible = true;
-        this.app.classList.add('show-yn-buttons');
-        this.ynButtons.classList.add('show');
+        this.actionButtons.classList.add('show-yn');
         
         // Add haptic feedback on mobile
         if ('vibrate' in navigator) {
@@ -383,8 +387,7 @@ console.log(message);</code></pre>
         if (!this.isYNVisible) return;
         
         this.isYNVisible = false;
-        this.app.classList.remove('show-yn-buttons');
-        this.ynButtons.classList.remove('show');
+        this.actionButtons.classList.remove('show-yn');
     }
     
     handleYNAction(action) {

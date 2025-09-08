@@ -70,36 +70,42 @@
         
         <!-- 入力エリア -->
         <div class="input-area">
-            <div class="input-container">
-                <textarea 
-                    class="input-textarea" 
-                    id="user-input"
-                    placeholder="メッセージを入力してください..."
-                    rows="3"></textarea>
-                <button class="send-button" id="send-button">
-                    <span class="icon">📤</span>
-                </button>
-            </div>
+            <textarea 
+                class="input-textarea" 
+                id="user-input"
+                placeholder="メッセージを入力してください..."
+                rows="3"></textarea>
         </div>
         
-        <!-- Y/Nボタン列（必要時のみ表示） -->
-        <div class="yn-buttons" id="yn-buttons">
-            <button class="yn-button yes" data-action="yes">
-                <span class="icon">✅</span>
-                <span class="text">Yes</span>
-            </button>
-            <button class="yn-button no" data-action="no">
-                <span class="icon">❌</span>
-                <span class="text">No</span>
-            </button>
-            <button class="yn-button maybe" data-action="maybe">
-                <span class="icon">🤔</span>
-                <span class="text">Maybe</span>
-            </button>
-            <button class="yn-button cancel" data-action="cancel">
-                <span class="icon">⏹️</span>
-                <span class="text">Cancel</span>
-            </button>
+        <!-- Y/N/送信ボタン列 -->
+        <div class="action-buttons" id="action-buttons">
+            <!-- 通常時の送信ボタン -->
+            <div class="normal-actions">
+                <button class="action-button send-action" id="send-button" data-action="send">
+                    <span class="icon">📤</span>
+                    <span class="text">送信</span>
+                </button>
+            </div>
+            
+            <!-- 確認時のY/Nボタン -->
+            <div class="yn-actions" id="yn-actions">
+                <button class="action-button yes" data-action="yes">
+                    <span class="icon">✅</span>
+                    <span class="text">Yes</span>
+                </button>
+                <button class="action-button no" data-action="no">
+                    <span class="icon">❌</span>
+                    <span class="text">No</span>
+                </button>
+                <button class="action-button maybe" data-action="maybe">
+                    <span class="icon">🤔</span>
+                    <span class="text">Maybe</span>
+                </button>
+                <button class="action-button cancel" data-action="cancel">
+                    <span class="icon">⏹️</span>
+                    <span class="text">Cancel</span>
+                </button>
+            </div>
         </div>
         
     </div>
