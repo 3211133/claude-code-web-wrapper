@@ -2,13 +2,13 @@
 
 🚀 **モバイル最適化されたClaude Code CLIのWebインターフェース**
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-blue)](https://your-username.github.io/claude-code-web-wrapper)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-blue)](https://3211133.github.io/claude-code-web-wrapper)
 [![Mobile First](https://img.shields.io/badge/Mobile-First-green)](#responsive-design)
 [![Modern CSS](https://img.shields.io/badge/CSS-Grid%20%2B%20Flexbox-orange)](#技術スタック)
 
 ## 📱 デモページ
 
-**🔗 Live Demo:** [https://your-username.github.io/claude-code-web-wrapper](https://your-username.github.io/claude-code-web-wrapper)
+**🔗 Live Demo:** [https://3211133.github.io/claude-code-web-wrapper](https://3211133.github.io/claude-code-web-wrapper)
 
 スマートフォン、タブレット、デスクトップで最適化されたレスポンシブデザインを体験できます。
 
@@ -68,14 +68,14 @@
 ## 🚀 クイックスタート
 
 ### オンラインでの確認
-1. [デモページ](https://your-username.github.io/claude-code-web-wrapper) にアクセス
+1. [デモページ](https://3211133.github.io/claude-code-web-wrapper) にアクセス
 2. 異なるデバイスサイズで表示を確認
 3. モード切り替えや入力機能をテスト
 
 ### ローカルでの実行
 ```bash
 # リポジトリをクローン
-git clone https://github.com/your-username/claude-code-web-wrapper.git
+git clone https://github.com/3211133/claude-code-web-wrapper.git
 cd claude-code-web-wrapper
 
 # 静的ファイルサーバーで実行（例：Python）
@@ -197,8 +197,8 @@ claude-code-web-wrapper/
 
 ## 🙋‍♂️ サポート
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/claude-code-web-wrapper/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/claude-code-web-wrapper/discussions)
+- **Issues**: [GitHub Issues](https://github.com/3211133/claude-code-web-wrapper/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/3211133/claude-code-web-wrapper/discussions)
 - **Documentation**: [プロジェクトドキュメント](docs/)
 
 ---
