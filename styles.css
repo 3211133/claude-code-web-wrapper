@@ -404,20 +404,12 @@ body {
     background: rgba(255, 107, 107, 0.1);
 }
 
-.action-button.maybe {
-    color: var(--accent-warning);
+.action-button.always {
+    color: var(--accent-tertiary);
 }
 
-.action-button.maybe:hover {
-    background: rgba(255, 212, 59, 0.1);
-}
-
-.action-button.cancel {
-    color: var(--text-muted);
-}
-
-.action-button.cancel:hover {
-    background: rgba(136, 136, 136, 0.1);
+.action-button.always:hover {
+    background: rgba(0, 255, 136, 0.1);
 }
 
 /* ====================================================================

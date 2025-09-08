@@ -68,7 +68,6 @@ class ClaudeCodeWebWrapper {
         });
         
         // Global demo functions
-        window.showYNButtons = () => this.showYNButtons();
         window.addDemoMessage = () => this.addDemoMessage();
         
         // Keyboard shortcuts
@@ -393,8 +392,7 @@ console.log(message);</code></pre>
         const actions = {
             yes: { emoji: '✅', text: 'Yes' },
             no: { emoji: '❌', text: 'No' },
-            maybe: { emoji: '🤔', text: 'Maybe' },
-            cancel: { emoji: '⏹️', text: 'Cancel' }
+            always: { emoji: '🔄', text: 'Always' }
         };
         
         const selectedAction = actions[action];

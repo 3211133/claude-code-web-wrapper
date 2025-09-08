@@ -41,7 +41,6 @@
                     </ol>
                     
                     <div class="demo-actions">
-                        <button class="demo-button" onclick="showYNButtons()">Y/Nボタンを表示</button>
                         <button class="demo-button" onclick="addDemoMessage()">サンプルメッセージを追加</button>
                     </div>
                 </div>
@@ -77,7 +76,7 @@
                 rows="1"></textarea>
         </div>
         
-        <!-- 常時表示アクションボタン列 -->
+        <!-- Y/N列（4ボタン） -->
         <div class="action-buttons" id="action-buttons">
             <button class="action-button send-action" id="send-button" data-action="send">
                 <span class="icon">📤</span>
@@ -91,13 +90,9 @@
                 <span class="icon">❌</span>
                 <span class="text">No</span>
             </button>
-            <button class="action-button maybe" data-action="maybe">
-                <span class="icon">🤔</span>
-                <span class="text">Maybe</span>
-            </button>
-            <button class="action-button cancel" data-action="cancel">
-                <span class="icon">⏹️</span>
-                <span class="text">Cancel</span>
+            <button class="action-button always" data-action="always">
+                <span class="icon">🔄</span>
+                <span class="text">Always</span>
             </button>
         </div>
         
