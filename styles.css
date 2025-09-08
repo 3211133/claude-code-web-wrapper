@@ -159,17 +159,8 @@ body {
 /* Message Styles */
 .message {
     margin-bottom: var(--spacing-lg);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: messageSlideIn var(--transition-normal) ease forwards;
 }
 
-@keyframes messageSlideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 .message-header {
     display: flex;
