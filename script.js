@@ -7,8 +7,13 @@ class ClaudeCodeWebWrapper {
     constructor() {
         this.currentMode = 'chat';
         this.messageCounter = 0;
+        this.socket = null;
+        this.isConnected = false;
+        this.reconnectAttempts = 0;
+        this.maxReconnectAttempts = 5;
         
         this.initializeElements();
+        this.initializeWebSocket();
         this.attachEventListeners();
         this.initializeApp();
     }
@@ -27,6 +32,169 @@ class ClaudeCodeWebWrapper {
         this.modeButtons = document.querySelectorAll('.mode-button');
         this.actionButtonElements = document.querySelectorAll('.action-button');
         this.demoButtons = document.querySelectorAll('.demo-button');
+    }
+    
+    initializeWebSocket() {
+        // Determine WebSocket URL based on environment
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const host = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? `${window.location.hostname}:3000`  // Development server
+            : window.location.host;  // Production server
+        
+        const wsUrl = `${protocol}//${host}`;
+        
+        try {
+            // Load Socket.IO client library
+            if (typeof io === 'undefined') {
+                this.loadSocketIO(() => this.connectWebSocket(wsUrl));
+            } else {
+                this.connectWebSocket(wsUrl);
+            }
+        } catch (error) {
+            console.error('WebSocket initialization failed:', error);
+            this.updateConnectionStatus('error', 'Connection Failed');
+        }
+    }
+    
+    loadSocketIO(callback) {
+        const script = document.createElement('script');
+        script.src = '/socket.io/socket.io.js';
+        script.onload = callback;
+        script.onerror = () => {
+            console.warn('Failed to load Socket.IO from server, falling back to demo mode');
+            this.updateConnectionStatus('demo', 'Demo Mode');
+        };
+        document.head.appendChild(script);
+    }
+    
+    connectWebSocket(url) {
+        try {
+            this.socket = io(url, {
+                transports: ['websocket', 'polling'],
+                timeout: 5000
+            });
+            
+            this.socket.on('connect', () => {
+                console.log('Connected to Claude Code server');
+                this.isConnected = true;
+                this.reconnectAttempts = 0;
+                this.updateConnectionStatus('connected', 'Connected');
+            });
+            
+            this.socket.on('disconnect', () => {
+                console.log('Disconnected from server');
+                this.isConnected = false;
+                this.updateConnectionStatus('disconnected', 'Disconnected');
+                this.attemptReconnect();
+            });
+            
+            this.socket.on('claude-output', (data) => {
+                this.handleClaudeResponse(data);
+            });
+            
+            this.socket.on('mode-changed', (data) => {
+                console.log('Mode changed:', data.mode);
+            });
+            
+            this.socket.on('connect_error', (error) => {
+                console.error('Connection error:', error);
+                this.updateConnectionStatus('error', 'Connection Error');
+                this.attemptReconnect();
+            });
+            
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+            this.updateConnectionStatus('demo', 'Demo Mode');
+        }
+    }
+    
+    attemptReconnect() {
+        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+            console.log('Max reconnection attempts reached, switching to demo mode');
+            this.updateConnectionStatus('demo', 'Demo Mode');
+            return;
+        }
+        
+        this.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 10000);
+        
+        this.updateConnectionStatus('reconnecting', `Reconnecting... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+        
+        setTimeout(() => {
+            if (!this.isConnected) {
+                this.socket?.connect();
+            }
+        }, delay);
+    }
+    
+    updateConnectionStatus(status, text) {
+        const statusDot = this.statusIndicator.querySelector('.status-dot');
+        const statusText = this.statusIndicator.querySelector('.status-text');
+        
+        statusDot.className = `status-dot ${status}`;
+        statusText.textContent = text;
+        
+        // Update CSS classes for different states
+        const statusClasses = {
+            connected: 'connected',
+            disconnected: 'disconnected',
+            reconnecting: 'reconnecting',
+            error: 'error',
+            demo: 'demo'
+        };
+        
+        Object.values(statusClasses).forEach(cls => {
+            statusDot.classList.remove(cls);
+        });
+        statusDot.classList.add(statusClasses[status] || status);
+    }
+    
+    handleClaudeResponse(data) {
+        // Remove any loading messages
+        const loadingMessages = this.claudeOutput.querySelectorAll('.loading-message');
+        loadingMessages.forEach(msg => msg.remove());
+        
+        const messageId = `claude-msg-${++this.messageCounter}`;
+        const timestamp = new Date().toLocaleTimeString('ja-JP', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+        
+        const responseHTML = `
+            <div class="message claude-message" id="${messageId}">
+                <div class="message-header">
+                    <span class="avatar">🤖</span>
+                    <span class="sender">Claude</span>
+                    <span class="time">${timestamp}</span>
+                    <span class="mode-indicator">${data.mode || this.currentMode}</span>
+                </div>
+                <div class="message-content">
+                    ${this.formatMessage(data.data)}
+                </div>
+            </div>
+        `;
+        
+        this.claudeOutput.insertAdjacentHTML('beforeend', responseHTML);
+        this.scrollToBottom();
+        
+        // Add typewriter effect
+        const messageContent = document.querySelector(`#${messageId} .message-content`);
+        if (messageContent) {
+            this.typewriterEffect(messageContent, data.data);
+        }
+        
+        console.log('Received Claude response:', data);
+    }
+    
+    formatMessage(content) {
+        if (!content) return '';
+        
+        // Simple markdown-like formatting
+        return content
+            .replace(/\n/g, '<br>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*([^*]+)\*/g, '<em>$1</em>');
     }
     
     attachEventListeners() {
@@ -105,6 +273,11 @@ class ClaudeCodeWebWrapper {
         // Update placeholder
         this.updatePlaceholder();
         
+        // Send mode change to backend
+        if (this.isConnected && this.socket) {
+            this.socket.emit('mode-change', { mode });
+        }
+        
         // Add visual feedback
         this.addModeChangeMessage(mode);
         
@@ -134,13 +307,20 @@ class ClaudeCodeWebWrapper {
         this.userInput.value = '';
         this.autoResizeTextarea();
         
-        // Simulate Claude response
-        setTimeout(() => {
-            this.generateClaudeResponse(message);
-        }, 800 + Math.random() * 1200);
-        
-        // Add loading indicator
-        this.addLoadingMessage();
+        // Send to backend via WebSocket or use demo mode
+        if (this.isConnected && this.socket) {
+            this.socket.emit('user-input', {
+                message: message,
+                mode: this.currentMode
+            });
+            this.addLoadingMessage();
+        } else {
+            // Fallback to demo mode
+            setTimeout(() => {
+                this.generateClaudeResponse(message);
+            }, 800 + Math.random() * 1200);
+            this.addLoadingMessage();
+        }
     }
     
     addUserMessage(content) {
@@ -427,10 +607,16 @@ console.log(message);</code></pre>
             navigator.vibrate(action === 'yes' ? [50, 50, 50] : 100);
         }
         
-        // Generate follow-up response
-        setTimeout(() => {
-            this.generateFollowUpResponse(action);
-        }, 600);
+        // Send Y/N response to backend via WebSocket or use demo mode
+        if (this.isConnected && this.socket) {
+            this.socket.emit('yn-action', { action });
+            this.addLoadingMessage();
+        } else {
+            // Fallback to demo mode
+            setTimeout(() => {
+                this.generateFollowUpResponse(action);
+            }, 600);
+        }
     }
     
     generateFollowUpResponse(action) {

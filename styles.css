@@ -449,6 +449,26 @@ body {
     animation: pulse 2s infinite;
 }
 
+.status-dot.disconnected {
+    background: var(--accent-secondary);
+    animation: blink 1s infinite;
+}
+
+.status-dot.reconnecting {
+    background: var(--accent-warning);
+    animation: spin 1s linear infinite;
+}
+
+.status-dot.error {
+    background: var(--accent-secondary);
+    animation: none;
+}
+
+.status-dot.demo {
+    background: var(--accent-tertiary);
+    animation: pulse 3s infinite;
+}
+
 .status-dot.connecting {
     background: var(--status-connecting);
     animation: blink 1s infinite;
@@ -462,6 +482,11 @@ body {
 @keyframes blink {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0.3; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ====================================================================
