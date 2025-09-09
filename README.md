@@ -72,7 +72,7 @@
 2. 異なるデバイスサイズで表示を確認
 3. モード切り替えや入力機能をテスト
 
-### ローカルでの実行
+### 静的デモ（フロントエンドのみ）
 ```bash
 # リポジトリをクローン
 git clone https://github.com/3211133/claude-code-web-wrapper.git
@@ -85,6 +85,25 @@ npx serve .
 
 # ブラウザで http://localhost:8000 を開く
 ```
+
+### 完全版サーバー（バックエンド統合）
+```bash
+# 依存関係をインストール
+npm install
+
+# 環境設定
+cp .env.example .env
+nano .env  # 必要に応じて編集
+
+# 開発サーバー起動
+npm run dev
+# または本番環境でPM2起動
+pm2 start ecosystem.config.js --env production
+
+# ブラウザで http://localhost:3000 を開く
+```
+
+詳細な設定手順は [DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
 
 ## 💡 使い方
 
@@ -137,7 +156,13 @@ claude-code-web-wrapper/
 ├── index.html          # メインHTMLファイル
 ├── styles.css          # スタイルシート
 ├── script.js           # JavaScript機能
+├── server.js           # Express.js サーバー
+├── package.json        # Node.js依存関係
+├── ecosystem.config.js # PM2設定
+├── .env.example        # 環境変数テンプレート
+├── DEPLOYMENT.md       # デプロイメントガイド
 ├── README.md           # このファイル
+├── logs/              # PM2ログディレクトリ
 └── docs/               # プロジェクト設計文書
     ├── 01_PROJECT_OVERVIEW.md
     ├── 02_SYSTEM_ARCHITECTURE.md
@@ -164,11 +189,13 @@ claude-code-web-wrapper/
 - [x] モバイルズーム防止対応
 - [x] 4ボタンレイアウト（送信・Yes・No・Always）
 
-### Phase 2: バックエンド統合 🚧
-- [ ] Node.js + Express サーバー
-- [ ] WebSocket 通信実装
-- [ ] Claude Code CLI 連携
-- [ ] セッション管理
+### Phase 2: バックエンド統合 ✅
+- [x] Node.js + Express サーバー
+- [x] WebSocket 通信実装
+- [x] Claude Code CLI 連携
+- [x] セッション管理
+- [x] PM2プロセス管理
+- [x] 本番環境デプロイ
 
 ### Phase 3: 高度な機能 📋
 - [ ] PWA対応
